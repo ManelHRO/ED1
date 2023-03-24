@@ -1,48 +1,45 @@
 #include <bits/stdc++.h>
+#define N 51
 using namespace std;
-char mt[51][51];
+char mt[N][N];
+bool vis[N][N];
 int dx[]={-1,0,1,0,-1,1,1,-1};
 int dy[]={0,1,0,-1,1,1,-1,-1};
+int x,y;
 
-void war(int n,int i,int j,int x, int y){
-    for(int k=0;k<4;k++){
+void war(int n,int i,int j){
+	vis[i][j] = true;
+    for(int k=0;k<8;k++){
         x=i+dx[k];
         y=j+dy[k];
-        if(x-1>=0&&y+1<n&&y-1>=0&&x+1<n&&mt[x][y]=='1'){
-            cout<<'i'<<x<<" "<<'j'<<y<<endl;
-            mt[x][y]='0';
-            return war(n,i,j,x,y);
+        if(x>=0&&y<n&&y>=0&&x<n&&mt[x][y]=='1'&&!vis[x][y]){
+            return war(n,x,y);
         }
     }
-    mt[i][j]='0';
-    cout<<endl;
 }
 
 int main(){
     
-    int n;
-    int cont=-1;
-    cin>>n;
-    for(int i=0;i<n;i++){
-        for(int j=0;j<n;j++){
-            cin>>mt[i][j];
-        }
-    }
-    for(int i=0;i<n;i++){
-        for(int j=0;j<n;j++){
-            if(mt[i][j]=='1'){
-                cont++;
-                cout<<"ii"<<i<<" "<<"jj"<<j<<endl;
-                war(n,i,j,0,0);
-            }
-        }
-    }
-    cout<<endl;
-    for(int i=0;i<n;i++){
-        for(int j=0;j<n;j++){
-            cout<<mt[i][j];
-        }
-        cout<<endl;
-    }
-    cout<<cont<<endl;
+    int n,cont,k=1;
+    
+    while(cin>>n){
+			cont=-1;
+		for(int i=0;i<n;i++){
+			for(int j=0;j<n;j++){
+				cin>>mt[i][j];
+			}
+		}
+		for(int i=0;i<n;i++){
+			for(int j=0;j<n;j++){
+				if(mt[i][j]=='1'&&!vis[i][j]){
+					cont++;
+					war(n,i,j);
+				}
+			}
+		}
+		cout<<"Image number "<<k++<<" contains "<<cont<<" war eagles."<<endl;
+		for(int i=0;i<n;i++)
+			for(int j=0;j<n;j++) 
+				mt[i][j]=false;
+	}
 }
