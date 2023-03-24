@@ -1,7 +1,8 @@
 #include <bits/stdc++.h>
 using namespace std;
 char mt[51][51];
-int dx[]={-1,0,1,0,-1,1,1,-1},dy[]={0,1,0,-1,1,1,-1,-1};
+int dx[]={-1,0,1,0,-1,1,1,-1};
+int dy[]={0,1,0,-1,1,1,-1,-1};
 
 void war(int n,int i,int j,int x, int y){
     for(int k=0;k<4;k++){
