@@ -1,3 +1,5 @@
+
+
 struct trem{
 	char jogador;
 	char cor;
@@ -49,7 +51,7 @@ stack::stack(){
 	N=0;
 }
 stack::~stack(){
-	delete tp;
+	
 }
 
 bool stack::Push(trem t){
@@ -167,6 +169,7 @@ void queue::clear(){
 		head=head->next;
 		node::desmontanode(p);
 	}
+	n=0;
 }
 
 
@@ -176,13 +179,49 @@ using namespace std;
 int main(){
 	stack t1,t2,t3,t4,t5,t6;
 	queue j1,j2,j3,j4;
+	char vet[4];
 	trem aux;
-	
-	for(int i=0;i<13*4;i++){
+
+	for(int i=0;i<13;i++){
 		cin>>aux.jogador>>aux.cor>>aux.torre;
+
 		if(aux.jogador=='1') j1.push(aux);
 		else if(aux.jogador=='2') j2.push(aux);
 		else if(aux.jogador=='3') j3.push(aux);
 		else j4.push(aux);
+	}
+	vet[0]=aux.jogador;
+		for(int i=0;i<13;i++){
+		cin>>aux.jogador>>aux.cor>>aux.torre;
+
+		if(aux.jogador=='1') j1.push(aux);
+		else if(aux.jogador=='2') j2.push(aux);
+		else if(aux.jogador=='3') j3.push(aux);
+		else j4.push(aux);
+	}
+	vet[1]=aux.jogador;
+		for(int i=0;i<13;i++){
+		cin>>aux.jogador>>aux.cor>>aux.torre;
+
+		if(aux.jogador=='1') j1.push(aux);
+		else if(aux.jogador=='2') j2.push(aux);
+		else if(aux.jogador=='3') j3.push(aux);
+		else j4.push(aux);
+	}
+	vet[2]=aux.jogador;
+		for(int i=0;i<13;i++){
+		cin>>aux.jogador>>aux.cor>>aux.torre;
+
+		if(aux.jogador=='1') j1.push(aux);
+		else if(aux.jogador=='2') j2.push(aux);
+		else if(aux.jogador=='3') j3.push(aux);
+		else j4.push(aux);
+	}
+	vet[3]=aux.jogador;
+	char primeiro=vet[0],segundo=vet[1],terceiro=vet[2],quarto=vet[3];
+
+	while(!t1.empty()||!t2.empty()!t3.empty()!t4.empty()!t5.empty()!t6.empty()){
+	
+		j1
 	}
 }
