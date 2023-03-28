@@ -1,43 +1,188 @@
-#include<bits/stdc++.h>
-using namespace std;
-#define M 101
-#define N 101
-char mt[M][N];
-bool vis[M][N];
-int dx[]={-1,0,1,0,-1,1,1,-1},dy[]={0,1,0,-1,1,1,-1,-1},x,y;
+struct trem{
+	char jogador;
+	char cor;
+	char torre;
+};
 
-void oil(int m,int n,int i,int j){
-	vis[i][j]=true;
+class node{
+	public:
+	trem D;
+	node *next;
 	
-	for(int k=0;k<8;k++){
-		x=i+dx[k];
-		y=j+dy[k];
-		if(x>=0&&x<m&&y>=0&&y<n&&mt[x][y]=='@'&&!vis[x][y]) oil(m,n,x,y);
+	static node* montanode(trem T);
+	static void desmontanode(node* p);
+};
+
+node* node::montanode(trem T){
+	
+	node *p = new node;
+	if(p){
+		p->D=T;
+		p->next=0;
+	}
+	return p;
+}
+void node::desmontanode(node* P){
+	delete P;
+}
+
+class stack{
+	
+	trem* T;
+	int N;
+	node* tp;
+	
+	public:
+	stack();
+	~stack();
+	bool Push(trem t);
+	void Pop();
+	trem Top();
+	bool Empty();
+	int Size();
+	void Clear();
+	
+};
+
+stack::stack(){
+	tp=0;
+	N=0;
+}
+stack::~stack(){
+	delete tp;
+}
+
+bool stack::Push(trem t){
+	
+	node *p;
+	p=node::montanode(t);
+	
+	if(!p) return false;
+	
+	p->next=tp;
+	tp=p;
+	N++;
+	return true;
+
+}
+void stack::Pop(){
+	node *p;
+	p=tp;
+	tp=tp->next;
+	node::desmontanode(p);
+	N--;
+}
+	
+trem stack::Top(){
+	
+	trem t;
+	
+	if(tp) t=tp->D;
+	return t;
+}
+
+bool stack::Empty(){
+	if(!tp) return true;
+	return false;
+}
+
+int stack::Size(){
+	return N;
+}	
+
+void stack::Clear(){
+	
+	while(tp){
+		node *p;
+		p=tp;
+		tp=tp->next;
+		node::desmontanode(p);
+	}
+	N=0;
+}
+
+class queue{
+	node* head;
+	node* tail;
+	int n;
+	
+	public:
+	queue();
+	~queue();
+	bool push(trem T);
+	void pop();
+	trem front();
+	bool empty();
+	int size();
+	void clear();
+};
+
+queue::queue(){
+	head=tail=0;
+	n=0;
+}
+queue::~queue(){
+	while(head){
+		node *p;
+		p=head;
+		head=head->next;
+		node::desmontanode(p);
+	}	
+}
+bool queue::push(trem T){
+	node *p;
+	p=node::montanode(T);
+	if(!p) return false;
+	if(!head) head=p;
+	else tail->next=p;
+	tail=p;
+	n++;
+	return true;
+}
+void queue::pop(){
+	if(head){
+		node* p=head;
+		head=head->next;
+		node::desmontanode(p);
+	}
+	if(!head) tail=0;
+	n--;
+}
+trem queue::front(){
+	trem T;
+	if(head) T=head->D;
+	return T;
+}
+bool queue::empty(){
+	if(!head)return true;
+	return false;
+}
+int queue::size(){
+	return n;
+}
+void queue::clear(){
+	while(head){
+		node *p;
+		p=head;
+		head=head->next;
+		node::desmontanode(p);
 	}
 }
 
+
+
+#include <iostream>
+using namespace std;
 int main(){
+	stack t1,t2,t3,t4,t5,t6;
+	queue j1,j2,j3,j4;
+	trem aux;
 	
-	int m,n,cont;
-	
-	while(cin>>m>>n&&m!=0){
-		cont=0;
-		
-		for(int i=0;i<m;i++){
-			for(int j=0;j<n;j++){
-				cin>>mt[i][j];
-			}
-		}
-		
-		for(int i=0;i<m;i++){
-			for(int j=0;j<n;j++){
-				if(mt[i][j]=='@'&&!vis[i][j]) cont++,oil(m,n,i,j);
-			}
-		}
-		cout<<cont<<endl;
-		
-		for(int i=0;i<m;i++)
-			for(int j=0;j<n;j++)
-				vis[i][j]=false;
+	for(int i=0;i<13*4;i++){
+		cin>>aux.jogador>>aux.cor>>aux.torre;
+		if(aux.jogador=='1') j1.push(aux);
+		else if(aux.jogador=='2') j2.push(aux);
+		else if(aux.jogador=='3') j3.push(aux);
+		else j4.push(aux);
 	}
 }
