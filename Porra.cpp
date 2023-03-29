@@ -1,11 +1,8 @@
-
-
 struct trem{
 	char jogador;
 	char cor;
-	char torre;
+	int torre;
 };
-
 class node{
 	public:
 	trem D;
@@ -37,12 +34,12 @@ class stack{
 	public:
 	stack();
 	~stack();
-	bool Push(trem t);
-	void Pop();
-	trem Top();
-	bool Empty();
-	int Size();
-	void Clear();
+	bool push(trem t);
+	void pop();
+	trem top();
+	bool empty();
+	int size();
+	void clear();
 	
 };
 
@@ -54,7 +51,7 @@ stack::~stack(){
 	
 }
 
-bool stack::Push(trem t){
+bool stack::push(trem t){
 	
 	node *p;
 	p=node::montanode(t);
@@ -67,7 +64,7 @@ bool stack::Push(trem t){
 	return true;
 
 }
-void stack::Pop(){
+void stack::pop(){
 	node *p;
 	p=tp;
 	tp=tp->next;
@@ -75,7 +72,7 @@ void stack::Pop(){
 	N--;
 }
 	
-trem stack::Top(){
+trem stack::top(){
 	
 	trem t;
 	
@@ -83,16 +80,16 @@ trem stack::Top(){
 	return t;
 }
 
-bool stack::Empty(){
+bool stack::empty(){
 	if(!tp) return true;
 	return false;
 }
 
-int stack::Size(){
+int stack::size(){
 	return N;
 }	
 
-void stack::Clear(){
+void stack::clear(){
 	
 	while(tp){
 		node *p;
@@ -172,56 +169,53 @@ void queue::clear(){
 	n=0;
 }
 
-
-
 #include <iostream>
 using namespace std;
 int main(){
-	stack t1,t2,t3,t4,t5,t6;
-	queue j1,j2,j3,j4;
-	char vet[4];
+	stack tower[6];
+    queue j1,j2,j3,j4;
+	queue player[4];
+    int contador=0;
+    char vet[4];
 	trem aux;
 
-	for(int i=0;i<13;i++){
-		cin>>aux.jogador>>aux.cor>>aux.torre;
+    for(int i=0;i<13*4;i++){
 
-		if(aux.jogador=='1') j1.push(aux);
-		else if(aux.jogador=='2') j2.push(aux);
-		else if(aux.jogador=='3') j3.push(aux);
-		else j4.push(aux);
-	}
-	vet[0]=aux.jogador;
-		for(int i=0;i<13;i++){
-		cin>>aux.jogador>>aux.cor>>aux.torre;
+        cin>>aux.jogador>>aux.cor>>aux.torre;
 
-		if(aux.jogador=='1') j1.push(aux);
-		else if(aux.jogador=='2') j2.push(aux);
-		else if(aux.jogador=='3') j3.push(aux);
-		else j4.push(aux);
-	}
-	vet[1]=aux.jogador;
-		for(int i=0;i<13;i++){
-		cin>>aux.jogador>>aux.cor>>aux.torre;
+        if(aux.cor=='A') vet[0]=aux.jogador;
+        else if(aux.cor=='V') vet[1]=aux.jogador;
+        else if(aux.cor=='R') vet[2]=aux.jogador;
+        else if(aux.cor=='B') vet[3]=aux.jogador;
 
-		if(aux.jogador=='1') j1.push(aux);
-		else if(aux.jogador=='2') j2.push(aux);
-		else if(aux.jogador=='3') j3.push(aux);
-		else j4.push(aux);
-	}
-	vet[2]=aux.jogador;
-		for(int i=0;i<13;i++){
-		cin>>aux.jogador>>aux.cor>>aux.torre;
+        if(aux.jogador=='1') j1.push(aux);
+        else if(aux.jogador=='2') j2.push(aux);
+        else if(aux.jogador=='3') j3.push(aux);
+        else j4.push(aux);
+    }
+    
+    for(int i=0;i<4;i++){
+        if(vet[i] == '1' ) player[i]=j1;
+        if(vet[i] == '2' ) player[i]=j2;
+        if(vet[i] == '3' ) player[i]=j3;
+        if(vet[i] == '4' ) player[i]=j4;
+    }
 
-		if(aux.jogador=='1') j1.push(aux);
-		else if(aux.jogador=='2') j2.push(aux);
-		else if(aux.jogador=='3') j3.push(aux);
-		else j4.push(aux);
-	}
-	vet[3]=aux.jogador;
-	char primeiro=vet[0],segundo=vet[1],terceiro=vet[2],quarto=vet[3];
+    while(contador<52){
 
-	while(!t1.empty()||!t2.empty()!t3.empty()!t4.empty()!t5.empty()!t6.empty()){
-	
-		j1
-	}
+        for(int k=0;k<4;k++){
+            if(tower[(player[k].front().torre)-1].size()==6){
+                
+            }
+            if(player[k].front().cor!='P'){
+                tower[(player[k].front().torre)-1].push(player[k].front());
+                player[k].pop();
+            }
+            else{
+                if(tower[(player[k].front().torre)-1].size()>0)tower[(player[k].front().torre)-1].pop();
+                player[k].pop();
+            }
+        }
+        contador++;
+    }
 }
