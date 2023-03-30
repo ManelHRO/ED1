@@ -73,11 +73,12 @@ bool stack::push(trem t){
 
 }
 void stack::pop(){
-	snode *p;
-	p=tp;
-	tp=tp->next;
-	snode::desmontanode(p);
-	N--;
+	snode *p=tp;
+	if(p){
+		tp=tp->next;
+		snode::desmontanode(p);
+		N--;
+	}
 }
 	
 trem stack::top(){
@@ -204,14 +205,15 @@ void queue::clear(){
 int main(){
 	stack tower[6];
 	queue player[4];
+	int parada;
     int contador=13;
 	trem aux;
 
     for(int i=0;i<13*4;i++){
         cin>>aux.jogador>>aux.cor>>aux.torre;
-        if(aux.jogador=='1') player[0].push(aux);
-        else if(aux.jogador=='2') player[1].push(aux);
-        else if(aux.jogador=='3') player[2].push(aux);
+        if(aux.jogador==1) player[0].push(aux);
+        else if(aux.jogador==2) player[1].push(aux);
+        else if(aux.jogador==3) player[2].push(aux);
         else player[3].push(aux);
     }
 	/*for(int i=0;i<4;i++){
@@ -223,20 +225,19 @@ int main(){
 	}*/
     
     while(contador--){
-
         for(int k=0;k<4;k++){
-            if(!tower[player[k].front().torre].empty()){
-                //cout<<'!'<<endl;
-                for(int i=(player[k].front().torre)+1;i!=player[k].front().torre;i=(i+1)%6){
-                    if(tower[i].empty()){
-                        i=player[k].front().torre;
+            if(tower[player[k].front().torre-1].size()==6){
+				parada=0;
+				
+                for(int i=player[k].front().torre;parada<7;i=(i+1)%6,parada++){
+                    if(tower[i].size()<6){
 
                         if(player[k].front().cor!='P'){
-                        tower[(player[k].front().torre)].push(player[k].front());
+                        tower[i].push(player[k].front());
                         player[k].pop();
                         }
                         else{
-                            if(tower[(player[k].front().torre)  ].size()>0)tower[(player[k].front().torre)-1].pop();
+                            if(tower[i].size()>0) tower[i].pop();
                             player[k].pop();
                         }
                     } 
@@ -244,15 +245,22 @@ int main(){
             }
             else{
                 if(player[k].front().cor!='P'){
-                    tower[(player[k].front().torre)].push(player[k].front());
+                    tower[(player[k].front().torre)-1].push(player[k].front());
                     player[k].pop();
                 }
                 else{
-                    if(tower[(player[k].front().torre)].size()>0)tower[(player[k].front().torre)-1].pop();
+                    if(tower[(player[k].front().torre)-1].size()>0)tower[(player[k].front().torre)-1].pop();
                     player[k].pop();
                 }
             }
         }
     }
+	for(int i=0;i<6;i++){
+		for(int j=0;j<6;j++){
+			cout<<tower[j].top().cor<<" ";
+			tower[j].pop();
+		}
+		cout<<endl;
+	}
 }
 //j=(j+1)%6
