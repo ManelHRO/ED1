@@ -248,3 +248,4 @@ int main(){
         contador++;
     }*/
 }
+//j=(j+1)%6
