@@ -6,6 +6,7 @@ struct trem{
 	char cor;
 	int torre;
 };
+//------------------------------------------------------------------------------------//
 
 class snode{
 	public:
@@ -228,10 +229,9 @@ int main(){
         for(int k=0;k<4;k++){
             if(tower[player[k].front().torre-1].size()==6){
 				parada=0;
-				
-                for(int i=player[k].front().torre;parada<7;i=(i+1)%6,parada++){
-                    if(tower[i].size()<6){
 
+                for(int i=player[k].front().torre-1;parada<7;i=(i+1)%6,parada++){
+                    if(tower[i].size()<6){
                         if(player[k].front().cor!='P'){
                         tower[i].push(player[k].front());
                         player[k].pop();
@@ -240,6 +240,7 @@ int main(){
                             if(tower[i].size()>0) tower[i].pop();
                             player[k].pop();
                         }
+						parada=7;
                     } 
                 }
             }
@@ -255,12 +256,11 @@ int main(){
             }
         }
     }
-	for(int i=0;i<6;i++){
+	/*for(int i=0;i<6;i++){
 		for(int j=0;j<6;j++){
 			cout<<tower[j].top().cor<<" ";
 			tower[j].pop();
 		}
 		cout<<endl;
-	}
+	}*/
 }
-//j=(j+1)%6
