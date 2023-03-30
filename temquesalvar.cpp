@@ -4,101 +4,33 @@ struct trem{
 	char torre;
 };
 
-class node{
+class snode{
 	public:
 	trem D;
-	node *next;
+	snode *next;
 	
-	static node* montanode(trem T);
-	static void desmontanode(node* p);
+	static snode* montanode(trem T);
+	static void desmontanode(snode* p);
 };
 
-node* node::montanode(trem T){
+snode* snode::montanode(trem T){
 	
-	node *p = new node;
+	snode *p = new snode;
 	if(p){
 		p->D=T;
 		p->next=0;
 	}
 	return p;
 }
-void node::desmontanode(node* P){
+void snode::desmontanode(snode* P){
 	delete P;
-}
-
-class queue{
-	node* head;
-	node* tail;
-	int n;
-	
-	public:
-	queue();
-	~queue();
-	bool push(trem T);
-	void pop();
-	trem front();
-	bool empty();
-	int size();
-	void clear();
-};
-
-queue::queue(){
-	head=tail=0;
-	n=0;
-}
-queue::~queue(){
-	while(head){
-		node *p;
-		p=head;
-		head=head->next;
-		node::desmontanode(p);
-	}	
-}
-bool queue::push(trem T){
-	node *p;
-	p=node::montanode(T);
-	if(!p) return false;
-	if(!head) head=p;
-	else tail->next=p;
-	tail=p;
-	n++;
-	return true;
-}
-void queue::pop(){
-	if(head){
-		node* p=head;
-		head=head->next;
-		node::desmontanode(p);
-	}
-	if(!head) tail=0;
-	n--;
-}
-trem queue::front(){
-	trem T;
-	if(head) T=head->D;
-	return T;
-}
-bool queue::empty(){
-	if(!head)return true;
-	return false;
-}
-int queue::size(){
-	return n;
-}
-void queue::clear(){
-	while(head){
-		node *p;
-		p=head;
-		head=head->next;
-		node::desmontanode(p);
-	}
 }
 
 class stack{
 	
 	trem* T;
 	int N;
-	node* tp;
+	snode* tp;
 	
 	public:
 	stack();
@@ -122,8 +54,8 @@ stack::~stack(){
 
 bool stack::Push(trem t){
 	
-	node *p;
-	p=node::montanode(t);
+	snode *p;
+	p=snode::montanode(t);
 	
 	if(!p) return false;
 	
@@ -134,10 +66,10 @@ bool stack::Push(trem t){
 
 }
 void stack::Pop(){
-	node *p;
+	snode *p;
 	p=tp;
 	tp=tp->next;
-	node::desmontanode(p);
+	snode::desmontanode(p);
 	N--;
 }
 	
@@ -161,14 +93,104 @@ int stack::Size(){
 void stack::Clear(){
 	
 	while(tp){
-		node *p;
+		snode *p;
 		p=tp;
 		tp=tp->next;
-		node::desmontanode(p);
+		snode::desmontanode(p);
 	}
 	N=0;
 }
+//------------------------------------------------------------------------------------//
+class qnode{
+	public:
+	trem D;
+	qnode *next;
+	
+	static qnode* montanode(trem T);
+	static void desmontanode(qnode* p);
+};
 
+qnode* qnode::montanode(trem T){
+	
+	qnode *p = new qnode;
+	if(p){
+		p->D=T;
+		p->next=0;
+	}
+	return p;
+}
+void qnode::desmontanode(qnode* P){
+	delete P;
+}
+
+class queue{
+	qnode* head;
+	qnode* tail;
+	int n;
+	
+	public:
+	queue();
+	~queue();
+	bool push(trem T);
+	void pop();
+	trem front();
+	bool empty();
+	int size();
+	void clear();
+};
+
+queue::queue(){
+	head=tail=0;
+	n=0;
+}
+queue::~queue(){
+	while(head){
+		qnode *p;
+		p=head;
+		head=head->next;
+		qnode::desmontanode(p);
+	}	
+}
+bool queue::push(trem T){
+	qnode *p;
+	p=qnode::montanode(T);
+	if(!p) return false;
+	if(!head) head=p;
+	else tail->next=p;
+	tail=p;
+	n++;
+	return true;
+}
+void queue::pop(){
+	if(head){
+		qnode* p=head;
+		head=head->next;
+		qnode::desmontanode(p);
+	}
+	if(!head) tail=0;
+	n--;
+}
+trem queue::front(){
+	trem T;
+	if(head) T=head->D;
+	return T;
+}
+bool queue::empty(){
+	if(!head)return true;
+	return false;
+}
+int queue::size(){
+	return n;
+}
+void queue::clear(){
+	while(head){
+		qnode *p;
+		p=head;
+		head=head->next;
+		qnode::desmontanode(p);
+	}
+}
+//------------------------------------------------------------------------------------//
 
 #include <iostream>
 using namespace std;
@@ -190,7 +212,7 @@ int main(){
         else if(aux.cor=='B') vet[3]=aux.jogador;
 
         if(aux.jogador=='1') j1.push(aux);
-        else if(aux.jogador=='2') j2.push(aux),cout<<aux.cor<<endl;
+        else if(aux.jogador=='2') j2.push(aux);
         else if(aux.jogador=='3') j3.push(aux);
         else j4.push(aux);
     }
@@ -201,17 +223,17 @@ int main(){
         else if(vet[i] == '3' ) player[i]=j3;
         else player[i]=j4;
     }
-	/*for(int i=0;i<4;i++){
+	for(int i=0;i<4;i++){
 		for(int j=0;j<13;j++){
 			cout<<player[i].front().jogador<<player[i].front().cor<<player[i].front().torre<<" ";
 			player[i].pop();
 		}
 		cout<<endl<<endl;
-	}*/
+	}
 
 
 	
-    while(contador<52){
+    /*while(contador<52){
 
         for(int k=0;k<4;k++){
             if(player[k].front().cor!='P'){
@@ -224,6 +246,5 @@ int main(){
             }
         }
         contador++;
-    }
+    }*/
 }
-    
