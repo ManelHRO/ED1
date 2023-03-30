@@ -1,7 +1,10 @@
+#include <iostream>
+using namespace std;
+
 struct trem{
-	char jogador;
+	int jogador;
 	char cor;
-	char torre;
+	int torre;
 };
 
 class snode{
@@ -23,7 +26,7 @@ snode* snode::montanode(trem T){
 	return p;
 }
 void snode::desmontanode(snode* P){
-	delete P;
+	if(P) delete P;
 }
 
 class stack{
@@ -35,12 +38,12 @@ class stack{
 	public:
 	stack();
 	~stack();
-	bool Push(trem t);
-	void Pop();
-	trem Top();
-	bool Empty();
-	int Size();
-	void Clear();
+	bool push(trem t);
+	void pop();
+	trem top();
+	bool empty();
+	int size();
+	void clear();
 	
 };
 
@@ -49,13 +52,17 @@ stack::stack(){
 	N=0;
 }
 stack::~stack(){
-	delete tp;
+    snode *p;
+	while(tp){
+		p=tp;
+		tp=tp->next;
+		snode::desmontanode(p);
+	}
 }
 
-bool stack::Push(trem t){
+bool stack::push(trem t){
 	
-	snode *p;
-	p=snode::montanode(t);
+	snode *p=snode::montanode(t);
 	
 	if(!p) return false;
 	
@@ -65,7 +72,7 @@ bool stack::Push(trem t){
 	return true;
 
 }
-void stack::Pop(){
+void stack::pop(){
 	snode *p;
 	p=tp;
 	tp=tp->next;
@@ -73,7 +80,7 @@ void stack::Pop(){
 	N--;
 }
 	
-trem stack::Top(){
+trem stack::top(){
 	
 	trem t;
 	
@@ -81,19 +88,18 @@ trem stack::Top(){
 	return t;
 }
 
-bool stack::Empty(){
+bool stack::empty(){
 	if(!tp) return true;
 	return false;
 }
 
-int stack::Size(){
+int stack::size(){
 	return N;
 }	
 
-void stack::Clear(){
-	
+void stack::clear(){
+    snode *p;
 	while(tp){
-		snode *p;
 		p=tp;
 		tp=tp->next;
 		snode::desmontanode(p);
@@ -120,7 +126,7 @@ qnode* qnode::montanode(trem T){
 	return p;
 }
 void qnode::desmontanode(qnode* P){
-	delete P;
+	if(P) delete P;
 }
 
 class queue{
@@ -140,24 +146,25 @@ class queue{
 };
 
 queue::queue(){
-	head=tail=0;
+	head=0;
+    tail=0;
 	n=0;
 }
 queue::~queue(){
+    qnode *p;
 	while(head){
-		qnode *p;
 		p=head;
 		head=head->next;
 		qnode::desmontanode(p);
 	}	
 }
 bool queue::push(trem T){
-	qnode *p;
-	p=qnode::montanode(T);
+	qnode* p=qnode::montanode(T);
 	if(!p) return false;
 	if(!head) head=p;
 	else tail->next=p;
 	tail=p;
+    tail->next=0;
 	n++;
 	return true;
 }
@@ -176,76 +183,76 @@ trem queue::front(){
 	return T;
 }
 bool queue::empty(){
-	if(!head)return true;
-	return false;
+    return !head;
 }
 int queue::size(){
 	return n;
 }
 void queue::clear(){
+    qnode *p;
 	while(head){
-		qnode *p;
 		p=head;
 		head=head->next;
 		qnode::desmontanode(p);
 	}
+    n=0;
+    tail=0;
 }
 //------------------------------------------------------------------------------------//
 
-#include <iostream>
-using namespace std;
+
 int main(){
 	stack tower[6];
-    queue j1,j2,j3,j4;
 	queue player[4];
-    int contador=0;
-    char vet[4];
+    int contador=13;
 	trem aux;
 
     for(int i=0;i<13*4;i++){
-
         cin>>aux.jogador>>aux.cor>>aux.torre;
-
-        if(aux.cor=='A') vet[0]=aux.jogador;
-        else if(aux.cor=='V') vet[1]=aux.jogador;
-        else if(aux.cor=='R') vet[2]=aux.jogador;
-        else if(aux.cor=='B') vet[3]=aux.jogador;
-
-        if(aux.jogador=='1') j1.push(aux);
-        else if(aux.jogador=='2') j2.push(aux);
-        else if(aux.jogador=='3') j3.push(aux);
-        else j4.push(aux);
+        if(aux.jogador=='1') player[0].push(aux);
+        else if(aux.jogador=='2') player[1].push(aux);
+        else if(aux.jogador=='3') player[2].push(aux);
+        else player[3].push(aux);
     }
-    
-    for(int i=0;i<4;i++){
-        if(vet[i] == '1' ) player[i]=j1;
-        else if(vet[i] == '2' ) player[i]=j2;
-        else if(vet[i] == '3' ) player[i]=j3;
-        else player[i]=j4;
-    }
-	for(int i=0;i<4;i++){
+	/*for(int i=0;i<4;i++){
 		for(int j=0;j<13;j++){
 			cout<<player[i].front().jogador<<player[i].front().cor<<player[i].front().torre<<" ";
 			player[i].pop();
 		}
 		cout<<endl<<endl;
-	}
-
-
-	
-    /*while(contador<52){
+	}*/
+    
+    while(contador--){
 
         for(int k=0;k<4;k++){
-            if(player[k].front().cor!='P'){
-                tower[(player[k].front().torre)-49].push(player[k].front());
-                player[k].pop();
+            if(!tower[player[k].front().torre].empty()){
+                //cout<<'!'<<endl;
+                for(int i=(player[k].front().torre)+1;i!=player[k].front().torre;i=(i+1)%6){
+                    if(tower[i].empty()){
+                        i=player[k].front().torre;
+
+                        if(player[k].front().cor!='P'){
+                        tower[(player[k].front().torre)].push(player[k].front());
+                        player[k].pop();
+                        }
+                        else{
+                            if(tower[(player[k].front().torre)  ].size()>0)tower[(player[k].front().torre)-1].pop();
+                            player[k].pop();
+                        }
+                    } 
+                }
             }
             else{
-                if(tower[(player[k].front().torre)-49].size()>0)tower[(player[k].front().torre)-1].pop();
-                player[k].pop();
+                if(player[k].front().cor!='P'){
+                    tower[(player[k].front().torre)].push(player[k].front());
+                    player[k].pop();
+                }
+                else{
+                    if(tower[(player[k].front().torre)].size()>0)tower[(player[k].front().torre)-1].pop();
+                    player[k].pop();
+                }
             }
         }
-        contador++;
-    }*/
+    }
 }
 //j=(j+1)%6
